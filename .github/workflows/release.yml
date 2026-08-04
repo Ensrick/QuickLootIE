@@ -1,16 +1,6 @@
 name: Release
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
-
-  push:
-    branches:
-      - "main"
-    paths-ignore:
-      - '*.yaml'
-      - '*.txt'
-      - '*.md'
   workflow_dispatch:
     inputs:
       version:
@@ -56,41 +46,26 @@ jobs:
         id: get-version
         shell: bash
         run: |
-          # Rolling Nightly tag for push/schedule; dispatch may override.
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "VERSION=${{ inputs.version || 'Nightly' }}" >> "$GITHUB_OUTPUT"
-          else
-            echo "VERSION=Nightly" >> "$GITHUB_OUTPUT"
-          fi
+          echo "VERSION=${{ inputs.version || 'Nightly' }}" >> "$GITHUB_OUTPUT"
       - name: Get publish settings
         id: get-publish
         shell: bash
         run: |
           DEFAULT_BODY='Latest nightly of QuickLootIE. These builds are untested and may contain bugs.'
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            if [ "${{ inputs.publish-release }}" = "true" ]; then
-              echo "publish_release=true" >> "$GITHUB_OUTPUT"
-            else
-              echo "publish_release=false" >> "$GITHUB_OUTPUT"
-            fi
-            BODY='${{ inputs.release-body }}'
-            if [ -z "$BODY" ]; then
-              BODY="$DEFAULT_BODY"
-            fi
-            {
-              echo "release_body<<EOF"
-              echo "$BODY"
-              echo "EOF"
-            } >> "$GITHUB_OUTPUT"
-          else
-            # push / schedule always refresh the rolling Nightly release when building.
+          if [ "${{ inputs.publish-release }}" = "true" ]; then
             echo "publish_release=true" >> "$GITHUB_OUTPUT"
-            {
-              echo "release_body<<EOF"
-              echo "$DEFAULT_BODY"
-              echo "EOF"
-            } >> "$GITHUB_OUTPUT"
+          else
+            echo "publish_release=false" >> "$GITHUB_OUTPUT"
           fi
+          BODY='${{ inputs.release-body }}'
+          if [ -z "$BODY" ]; then
+            BODY="$DEFAULT_BODY"
+          fi
+          {
+            echo "release_body<<EOF"
+            echo "$BODY"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - name: Check for changes last 24 hours
         id: should_run
         shell: bash
