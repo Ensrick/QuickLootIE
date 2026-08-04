@@ -1,0 +1,44 @@
+name: Engineering or maintenance task
+description: Propose bounded engineering work with measurable completion criteria.
+title: "[Engineering]: "
+labels:
+  - "kind: maintenance"
+body:
+  - type: input
+    id: parent
+    attributes:
+      label: Parent tracker or audit ID
+      placeholder: "#123 or QLIE-AUD-NNN"
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and rationale
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: State what is included and explicitly excluded.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification plan
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks and rollback considerations
+    validations:
+      required: true

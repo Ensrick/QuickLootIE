@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Upstream QuickLootIE support
+    url: https://github.com/MissCorruption/QuickLootIE/issues
+    about: Check whether behavior also affects the upstream project before filing a fork-specific duplicate.
+  - name: Nexus mod page
+    url: https://www.nexusmods.com/skyrimspecialedition/mods/120075
+    about: Read current requirements, compatibility notes, and public release information.

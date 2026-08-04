@@ -1,32 +1,51 @@
-name: Feature Request
-description: Suggest a feature for this mod
-title: "[FEATURE]: "
-labels: ["enhancement"]
+name: Feature request
+description: Propose user-facing behavior with clear motivation and compatibility constraints.
+title: "[Feature]: "
+labels:
+  - enhancement
 body:
   - type: markdown
     attributes:
-      value: "## Feature Request"
-  - type: input
-    id: title
-    attributes:
-      label: "Feature Title"
-      description: "A clear and concise title for the feature."
-      placeholder: "Enter the title for the feature request"
+      value: >-
+        Search existing fork and upstream issues first. Describe the player
+        outcome rather than prescribing an implementation unless the technical
+        constraint is essential.
   - type: textarea
     id: motivation
     attributes:
-      label: "Motivation"
-      description: "Please outline the motivation for the request."
-      placeholder: "Why is this feature important to you?"
+      label: Motivation and player outcome
+      description: Explain the problem and what successful behavior would enable.
+    validations:
+      required: true
   - type: textarea
     id: description
     attributes:
-      label: "Feature Description"
-      description: "A detailed description of the feature."
-      placeholder: "Describe the feature you'd like to see."
+      label: Proposed behavior
+      description: Include interactions, settings, defaults, and important edge cases.
+    validations:
+      required: true
   - type: textarea
-    id: additional-context
+    id: alternatives
     attributes:
-      label: "Additional Context"
-      description: "Add any other context or screenshots about the feature request here."
-      placeholder: "Add context or links to related issues, screenshots, etc."
+      label: Alternatives and current workarounds
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility, input, and performance considerations
+      description: Identify relevant runtimes, controllers, UI mods, integrations, or large-inventory concerns.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: References or examples
+      description: Link related mods, upstream issues, screenshots, or prior art.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: I searched existing fork and upstream issues for this request.
+          required: true
+        - label: I described the desired behavior and not only an implementation preference.
+          required: true
