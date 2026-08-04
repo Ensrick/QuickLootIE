@@ -24,7 +24,10 @@
 	"containerBlacklist": [
 		// Gunjar (must be interacted with directly to
 		// progress the intro quest)
-		"Skyrim.esm|09B0AD"
+		"Skyrim.esm|09B0AD",
+		// Alternate Start's vanilla-start skeleton must use its
+		// scripted activation path or QuickLoot IE can crash.
+		"Alternate Start - Live Another Life.esp|3DC4DB"
 	],
 	"swfConfig": {
 		// This can be used to modify internal values of the menu without building a new swf.
