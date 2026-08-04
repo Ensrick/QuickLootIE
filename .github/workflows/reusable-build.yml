@@ -4,15 +4,41 @@ on:
   workflow_call:
     inputs:
       spriggit_tool_version:
-        description: 'Spriggit version (optional, used for cache key)'
+        description: "Spriggit version (optional, used for cache key)"
         type: string
         required: false
-        default: ''
+        default: ""
 
 permissions:
   contents: read
 
 jobs:
+  test-native-policies:
+    name: Run native policy tests
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup xmake
+        uses: xmake-io/github-action-setup-xmake@3a1a5dddfc7fa625d9a698738334bf55655a861a # v1
+        with:
+          xmake-version: "3.0.9"
+          actions-cache-folder: ${{ runner.workspace }}/xmake-policy-test-cache
+          actions-cache-key: policy-tests-${{ hashFiles('tests/xmake.lua', 'tests/xmake-requires.lock', 'tests/**/*.cpp', 'src/Policies/**/*.h') }}
+
+      - name: Configure and build policy tests
+        shell: pwsh
+        working-directory: tests
+        run: |
+          xmake f -F xmake.lua -P . -y -m release -p windows -a x64
+          xmake -F xmake.lua -P . -y
+
+      - name: Run policy tests
+        shell: pwsh
+        working-directory: tests
+        run: xmake run -F xmake.lua -P . QuickLootIEPolicyTests --reporter console --colour-mode none
+
   build-plugin:
     name: Build ESP from Spriggit files
     runs-on: windows-latest

@@ -1,5 +1,7 @@
 #include "UniversalMenu.h"
 
+#include "Policies/InputContextPolicy.h"
+
 #include <SKSE/API.h>
 
 UniversalMenu::~UniversalMenu()
@@ -34,11 +36,11 @@ void UniversalMenu::ConstructFlatrim()
 {
 	//logger::trace("UniversalMenu::ConstructFlatrim");
 	this->depthPriority = static_cast<int8_t>(3);
-	auto version = REL::Module::get().version();
-	if (version.patch() >= 1130) {
-		this->inputContext.set(static_cast<Context>(19));
-	}
-	this->inputContext.set(static_cast<Context>(18));
+	// QuickLootIE currently leaves kUsesMenuContext unset, so IMenu does not
+	// push this context. Keep it runtime-correct for integrations or future use.
+	const auto version = REL::Module::get().version();
+	const auto selectedInputContext = QuickLoot::Policies::SelectFlatrimInputContext(version.patch());
+	this->inputContext.set(static_cast<Context>(selectedInputContext));
 }
 
 void UniversalMenu::ConstructVR(bool a_registerForHudModeChangeEvent, bool a_matchAsTopMenu, bool a_queueUpdateFixup)

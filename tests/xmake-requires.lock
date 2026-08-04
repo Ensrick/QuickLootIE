@@ -1,0 +1,31 @@
+{
+    __meta__ = {
+        version = "1.0"
+    },
+    ["windows|x64"] = {
+        ["catch2 v3.15.2#f56260b5"] = {
+            repo = {
+                branch = "master",
+                commit = "297a306f001947fcef159543fa742601a8608bbe",
+                url = "https://gitlab.com/tboox/xmake-repo.git"
+            },
+            version = "v3.15.2"
+        },
+        ["cmake#f56260b5"] = {
+            repo = {
+                branch = "master",
+                commit = "297a306f001947fcef159543fa742601a8608bbe",
+                url = "https://gitlab.com/tboox/xmake-repo.git"
+            },
+            version = "4.3.4"
+        },
+        ["ninja#f56260b5"] = {
+            repo = {
+                branch = "master",
+                commit = "297a306f001947fcef159543fa742601a8608bbe",
+                url = "https://gitlab.com/tboox/xmake-repo.git"
+            },
+            version = "v1.13.2"
+        }
+    }
+}

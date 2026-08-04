@@ -35,6 +35,22 @@ opened publicly until coordinated disclosure is appropriate.
 The complete policy, priority definitions, and definition of done are in
 [docs/engineering/standards.md](docs/engineering/standards.md).
 
+## Native policy tests
+
+Host-side policy tests do not require Skyrim, SKSE, or CommonLibSSE. From the
+repository root, run:
+
+```powershell
+xmake f -F xmake.lua -P tests -y -m release -p windows -a x64
+xmake -F xmake.lua -P tests -y
+xmake run -F xmake.lua -P tests QuickLootIEPolicyTests `
+  --reporter console --colour-mode none
+```
+
+The test project and its package lock are independent of the game-plugin build.
+Update `tests/xmake-requires.lock` intentionally whenever a test dependency is
+changed.
+
 ## Pull requests
 
 Pull requests must state:
