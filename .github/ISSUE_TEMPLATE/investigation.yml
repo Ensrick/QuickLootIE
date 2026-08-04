@@ -1,0 +1,46 @@
+name: Engineering investigation
+description: Record a bounded hypothesis that requires evidence before it is classified as a defect.
+title: "[Investigation]: "
+labels:
+  - "kind: investigation"
+  - "status: needs-reproduction"
+body:
+  - type: input
+    id: audit_id
+    attributes:
+      label: Audit ID
+      placeholder: QLIE-AUD-NNN, or Not assigned
+    validations:
+      required: true
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Hypothesis
+      description: State one falsifiable technical hypothesis.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence_for
+    attributes:
+      label: Evidence supporting the hypothesis
+    validations:
+      required: true
+  - type: textarea
+    id: evidence_against
+    attributes:
+      label: Evidence against or alternative explanations
+    validations:
+      required: true
+  - type: textarea
+    id: questions
+    attributes:
+      label: Questions this investigation must answer
+    validations:
+      required: true
+  - type: textarea
+    id: exit
+    attributes:
+      label: Exit criteria
+      description: Define what converts this to a defect, closes it as invalid, or records it as a limitation.
+    validations:
+      required: true

@@ -1,74 +1,77 @@
-name: Bug Report
-description: File a bug report.
-title: "[Bug]: "
-labels: ["bug", "triage"]
+name: Verified or suspected defect
+description: Report reproducible incorrect behavior in QuickLootIE.
+title: "[Defect]: "
+labels:
+  - "kind: defect"
+  - "status: needs-reproduction"
 body:
   - type: markdown
     attributes:
-      value: |
-        Thanks for taking the time to fill out this bug report!
-  
-  - type: textarea
-    id: what-happened
-    attributes:
-      label: What happened? (Actual vs Expected Behavior)
-      description: Please describe what happened and what you expected to happen.
-      placeholder: Provide a clear description of the actual behavior and the expected outcome.
-    validations:
-      required: true
-
-  - type: textarea
-    id: icon-mods
-    attributes:
-      label: What mods for icons where you using, if any?
-      description: List the mods you used for custom icons.
-      placeholder: Aura's Inventory Tweaks, Kome's Inventory Tweaks, ...
-
-  - type: textarea
-    id: steps-to-reproduce
-    attributes:
-      label: Steps to Reproduce
-      description: Please provide detailed steps so we can reproduce the issue.
-      placeholder: List the steps required to reproduce the bug.
-    validations:
-      required: true
-
-  - type: dropdown
-    id: version
-    attributes:
-      label: Version
-      description: What mod version were you using?
-      options:
-        - 1.0.0
-        - 1.1.0
-        - 1.2.0
-        - 2.0.0
-        - 3.0.0
-      default: 0
-    validations:
-      required: true
-
+      value: >-
+        Do not include private information. Security-sensitive reports belong in
+        private vulnerability reporting, as described in SECURITY.md.
   - type: input
-    id: Skyrim-Version
+    id: commit
     attributes:
-      label: What Skyrim version are you using?
-      description: Specify the Skyrim version number here.
+      label: QuickLootIE version or commit
+      placeholder: ce1b8f0 or release name
     validations:
       required: true
-
-  - type: textarea
-    id: logs
+  - type: input
+    id: runtime
     attributes:
-      label: Relevant log output (Expandable)
-      description: Please paste any relevant log output here. This field is expandable for better readability and will be automatically formatted as shell code.
-      render: shell
-      placeholder: Paste your logs here.   
-
-  - type: checkboxes
-    id: terms
+      label: Skyrim, SKSE, and platform versions
+      placeholder: Skyrim SE 1.6.1170, SKSE 2.2.6, Windows 11
+    validations:
+      required: true
+  - type: dropdown
+    id: input_device
     attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](../blob/master/CONDUCT).
+      label: Input device
       options:
-        - label: I agree to follow this project's Code of Conduct
+        - Keyboard and mouse
+        - Xbox-compatible controller
+        - DualShock or DualSense controller
+        - Steam Input or remapped controller
+        - Skyrim VR controller
+        - Not relevant
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include whether the problem reproduces with only required dependencies.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs, crash record, save, screenshots, or other evidence
+  - type: textarea
+    id: modlist
+    attributes:
+      label: Relevant mods and file conflicts
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: I searched existing fork and upstream issues.
+          required: true
+        - label: I identified whether the problem reproduces on a minimal profile, or explained why that test is not possible.
+          required: true
+        - label: I removed personal or sensitive data from attached logs.
           required: true
