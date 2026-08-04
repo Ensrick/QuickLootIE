@@ -1,6 +1,8 @@
 #include "ItemStack.h"
 #include "ItemDefines.h"
 
+#include "Policies/OwnershipPolicy.h"
+
 namespace QuickLoot::Items
 {
 	ItemStack::ItemStack(RE::InventoryEntryData* entry, RE::ObjectRefHandle container, RE::ObjectRefHandle dropRef) :
@@ -285,7 +287,7 @@ namespace QuickLoot::Items
 			const auto stealing = _data.isStealing;
 			const auto value = _data.value;
 			const auto reason = stealing ? RE::ITEM_REMOVE_REASON::kSteal : RE::ITEM_REMOVE_REASON::kStoreInContainer;
-			const auto owner = container->GetOwner();
+			const auto owner = GetEffectiveItemOwner();
 
 			if (actor == player) {
 				auto eventType = RE::AQUIRE_TYPE::kContainer;
@@ -438,30 +440,27 @@ namespace QuickLoot::Items
 		const auto player = RE::PlayerCharacter::GetSingleton();
 		const auto container = _container.get().get();
 		const auto actor = container->As<RE::Actor>();
-		const auto owner = container->GetOwner();
+		const auto itemOwner = GetEffectiveItemOwner();
+		const auto isPlayerInventory = container == player;
+		const auto isDeadActor = actor && actor->IsDead(false);
+		const auto hasEffectiveOwner = itemOwner != nullptr;
 
-		// player can't steal from their own inventory
-		if (container == player) {
+		if (!Policies::ShouldCheckItemRemovalPermission(isPlayerInventory, isDeadActor, hasEffectiveOwner)) {
 			return false;
 		}
 
-		// taking from dead actors is never considered stealing
-		if (actor && actor->IsDead(false)) {
-			return false;
-		}
+		return Policies::IsItemRemovalTheft(
+			isPlayerInventory,
+			isDeadActor,
+			hasEffectiveOwner,
+			IsPlayerAllowedToTakeItemWithValue(player, itemOwner, _entry->GetValue()));
+	}
 
-		// if the container is not an actor and not owned by anyone, we're not stealing
-		if (!actor && !owner) {
-			return false;
-		}
-
-		auto itemOwner = _entry->GetOwner();
-		if (!itemOwner) {
-			itemOwner = actor ? actor : owner;
-		}
-
-		const auto allowed = IsPlayerAllowedToTakeItemWithValue(player, itemOwner, _entry->GetValue());
-		return owner && !allowed;
+	RE::TESForm* ItemStack::GetEffectiveItemOwner() const
+	{
+		const auto container = _container.get().get();
+		const auto actor = container->As<RE::Actor>();
+		return Policies::ResolveEffectiveItemOwner<RE::TESForm>(_entry->GetOwner(), actor, container->GetOwner());
 	}
 
 	ItemType ItemStack::GetItemType() const
