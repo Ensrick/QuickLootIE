@@ -8,7 +8,9 @@ namespace QuickLoot::Observers
 
 	RE::ObjectRefHandle GetCurrentVRTarget()
 	{
-		const auto rightHanded = RE::PlayerCharacter::GetSingleton()->GetVRPlayerRuntimeData().isRightHandMainHand;
+		const auto player = RE::PlayerCharacter::GetSingleton();
+		const auto runtimeData = player ? player->GetVRPlayerRuntimeData() : nullptr;
+		const auto rightHanded = runtimeData && runtimeData->isRightHandMainHand;
 		const auto hand = rightHanded ? RE::VR_DEVICE::kRightController : RE::VR_DEVICE::kLeftController;
 		const auto crosshair = RE::CrosshairPickData::GetSingleton();
 
