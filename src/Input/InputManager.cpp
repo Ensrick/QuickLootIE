@@ -416,7 +416,9 @@ namespace QuickLoot::Input
 		case DeviceType::kVivePrimary:
 		case DeviceType::kWMRPrimary:
 			{
-				const auto rightHanded = RE::PlayerCharacter::GetSingleton()->GetVRPlayerRuntimeData().isRightHandMainHand;
+				const auto player = RE::PlayerCharacter::GetSingleton();
+				const auto runtimeData = player ? player->GetVRPlayerRuntimeData() : nullptr;
+				const auto rightHanded = runtimeData && runtimeData->isRightHandMainHand;
 				return rightHanded ? deviceManager->GetVRControllerRight() : deviceManager->GetVRControllerLeft();
 			}
 
@@ -424,7 +426,9 @@ namespace QuickLoot::Input
 		case DeviceType::kViveSecondary:
 		case DeviceType::kWMRSecondary:
 			{
-				const auto rightHanded = RE::PlayerCharacter::GetSingleton()->GetVRPlayerRuntimeData().isRightHandMainHand;
+				const auto player = RE::PlayerCharacter::GetSingleton();
+				const auto runtimeData = player ? player->GetVRPlayerRuntimeData() : nullptr;
+				const auto rightHanded = runtimeData && runtimeData->isRightHandMainHand;
 				return rightHanded ? deviceManager->GetVRControllerLeft() : deviceManager->GetVRControllerRight();
 			}
 

@@ -90,6 +90,7 @@ namespace QuickLoot::Items
 
 		// Helpers
 
+		[[nodiscard]] RE::TESForm* GetEffectiveItemOwner() const;
 		bool IsStealing() const;
 		ItemType GetItemType() const;
 		int GetPickpocketChance() const;
