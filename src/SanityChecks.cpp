@@ -5,11 +5,13 @@
 
 void ShowFatalError(const char* message)
 {
-	const int result = WIN32::MessageBoxA(nullptr, message, "QuickLoot IE", MB_YESNO);
-	if (result == IDYES) {
-		logger::info("Exiting game...");
-		std::_Exit(EXIT_FAILURE);
-	}
+	// No-popup policy (skyrim-mod-assistant, memory feedback_no_popups_log_only_forks):
+	// this build is driven by unattended, headless launch chains, and a modal on the
+	// game thread wedges the process behind the borderless window with nothing the
+	// harness can dismiss. The sanity checks already return false to the caller, which
+	// disables QuickLoot IE; the failure belongs in the log, not in a dialog. Dropping
+	// the MessageBoxA call also keeps user32!MessageBoxA out of this DLL's import table.
+	logger::critical("QuickLoot IE sanity check failed: {}", message ? message : "");
 }
 
 bool QuickLoot::SanityChecks::PerformChecks()

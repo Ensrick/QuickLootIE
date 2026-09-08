@@ -49,6 +49,14 @@ target(PROJECT_NAME)
     -- Dependencies
     add_packages("fmt", "magic_enum", "nlohmann_json", "xbyak")
 
+    -- No-popup failure policy: build against the Ensrick CommonLibSSE-NG
+    -- no-modal-fail branch and define this in every TU that includes
+    -- SKSE/Impl/PCH.h. report_and_error is inline, so the linker folds one COMDAT
+    -- copy; the CommonLibSSE-NG target defines the same macro (see its xmake.lua)
+    -- so its own copies match ours and no MessageBoxW is emitted. See
+    -- extern/CommonLibSSE-NG/ENSRICK-NO-MODAL.md and skyrim-mod-assistant #254.
+    add_defines("COMMONLIBSSE_NO_MODAL_ERRORS")
+
     -- CommonLibSSE
     add_deps("commonlibsse-ng")
     add_rules("commonlibsse-ng.plugin", {

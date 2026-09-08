@@ -1,4 +1,4 @@
 [submodule "extern/CommonLibSSE-NG"]
 	path = extern/CommonLibSSE-NG
-	url = https://github.com/alandtse/CommonLibVR
-	branch = ng
+	url = https://github.com/Ensrick/CommonLibSSE-NG.git
+	branch = ensrick/no-modal-fail-v6.7.1
