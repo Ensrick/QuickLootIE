@@ -267,7 +267,19 @@ namespace QuickLoot::Input
 			return false;
 		}
 
+		// Address Library ID for BSInputDeviceManager::IsGamepadEnabled (base game
+		// function 67320). The AE table re-numbered this across builds:
+		//   1.7.x  -> 443396  (1.7.104 verified: 510926 and 68622 are absent (0) in
+		//                      versionlib-1-7-104-0.bin; 443396 -> RVA 0xCF97B0, whose
+		//                      disassembly is the gamepad-enabled check - devices[+0x70]
+		//                      then vfunc 7 IsEnabled. Picking 510926 here made
+		//                      REL::Relocation fail and CommonLib report_and_fail take
+		//                      the whole game down. skyrim-mod-assistant #254.)
+		//   1.6.1179 (GOG)    -> 510926
+		//   1.6.1130 .. 1.6.1178 -> 443396
+		//   older AE          -> 68622
 		uint64_t aeId =
+			REL::Module::get().version() >= REL::Version(1, 7, 0, 0) ? 443396 :
 			REL::Module::get().version() >= REL::Version(1, 6, 1179, 0) ? 510926 :
 			REL::Module::get().version() >= REL::Version(1, 6, 1130, 0) ? 443396 :
 																		  68622;
